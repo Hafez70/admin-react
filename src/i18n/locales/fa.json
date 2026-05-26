@@ -182,5 +182,9 @@
     "normal": "معمولی",
     "good": "خوب",
     "strong": "قوی"
+  },
+  "profile": {
+    "profile": "پروفایل",
+    "setting": "تنظیمات"
   }
 }

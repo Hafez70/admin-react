@@ -182,5 +182,9 @@
     "normal": "Normal",
     "good": "Good",
     "strong": "Strong"
+  },
+  "profile": {
+    "profile": "Profile",
+    "setting": "Setting"
   }
 }

@@ -6,7 +6,7 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { authService } from 'api/services';
-import { setAccessToken, setRefreshToken, setUser, getUser, getAccessToken, clearAuth } from 'utils/token';
+import { setAccessToken, setRefreshToken, setUser, getUser, getAccessToken, clearAuth, isTokenExpired } from 'utils/token';
 
 const AuthContext = createContext(null);
 
@@ -15,21 +15,50 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Initialize auth state from localStorage
+  /**
+   * Check authentication status
+   */
+  const checkAuth = useCallback(() => {
+    const savedUser = getUser();
+    const token = getAccessToken();
+
+    // Check if token exists and is not expired
+    if (savedUser && token && !isTokenExpired(token)) {
+      setUserState(savedUser);
+      setIsAuthenticated(true);
+      return true;
+    } else {
+      // Token is invalid or expired, clear auth
+      clearAuth();
+      setUserState(null);
+      setIsAuthenticated(false);
+      return false;
+    }
+  }, []);
+
+  // Initialize auth state from localStorage and validate token
   useEffect(() => {
     const initAuth = () => {
-      const savedUser = getUser();
-      const token = getAccessToken();
-
-      if (savedUser && token) {
-        setUserState(savedUser);
-        setIsAuthenticated(true);
-      }
-
+      checkAuth();
       setIsLoading(false);
     };
 
     initAuth();
+  }, [checkAuth]);
+
+  // Periodically check token validity (every 5 minutes)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const token = getAccessToken();
+      if (token && isTokenExpired(token)) {
+        // Token expired, logout user
+        clearAuth();
+        setUserState(null);
+        setIsAuthenticated(false);
+      }
+    }, 5 * 60 * 1000); // 5 minutes
+
+    return () => clearInterval(interval);
   }, []);
 
   /**
@@ -129,7 +158,8 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
-    updateUser
+    updateUser,
+    checkAuth
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
