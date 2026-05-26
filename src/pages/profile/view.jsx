@@ -1,10 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // material-ui
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 
@@ -15,17 +16,35 @@ import Avatar from 'components/@extended/Avatar';
 
 // assets
 import avatar1 from 'assets/images/users/avatar-1.png';
+import EditOutlined from '@ant-design/icons/EditOutlined';
 
 // ==============================|| PROFILE - VIEW ||============================== //
 
 export default function ProfileView() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { user } = useAuth();
+
+  const handleEdit = () => {
+    navigate('/profile/edit');
+  };
 
   return (
     <Grid container spacing={3}>
       <Grid size={12}>
-        <MainCard title={t('profile.viewProfile')}>
+        <MainCard
+          title={t('profile.viewProfile')}
+          secondary={
+            <Button
+              variant="contained"
+              startIcon={<EditOutlined />}
+              onClick={handleEdit}
+              size="small"
+            >
+              {t('common.edit')}
+            </Button>
+          }
+        >
           <Grid container spacing={3}>
             {/* Avatar and Basic Info */}
             <Grid size={12}>
@@ -33,99 +52,71 @@ export default function ProfileView() {
                 <Avatar alt="profile user" src={avatar1} sx={{ width: 72, height: 72 }} />
                 <Stack spacing={0.5}>
                   <Typography variant="h5">{user?.name || 'User'}</Typography>
-                  <Typography color="secondary">{user?.email || ''}</Typography>
-                  <Chip 
-                    label={user?.role && t(`roles.${user.role.replace('_', '')}`)} 
-                    color="primary" 
-                    size="small" 
+                  <Chip
+                    label={user?.role && t(`roles.${user.role.replace('_', '')}`)}
+                    color="primary"
+                    size="small"
                     sx={{ width: 'fit-content' }}
                   />
                 </Stack>
               </Stack>
             </Grid>
 
+            {/* Profile Details - Simple Label: Value Format */}
             <Grid size={12}>
-              <Divider />
-            </Grid>
+              <Stack spacing={2.5} sx={{ mt: 2 }}>
+                {/* Full Name */}
+                <Stack direction="row" spacing={2}>
+                  <Typography variant="subtitle1" sx={{ minWidth: 140, color: 'text.secondary' }}>
+                    {t('profile.fullName')}:
+                  </Typography>
+                  <Typography variant="body1">{user?.name || '-'}</Typography>
+                </Stack>
 
-            {/* Profile Details */}
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Stack spacing={1}>
-                <Typography variant="caption" color="secondary">
-                  {t('profile.fullName')}
-                </Typography>
-                <Typography variant="body1">{user?.name || '-'}</Typography>
-              </Stack>
-            </Grid>
+                {/* Email */}
+                <Stack direction="row" spacing={2}>
+                  <Typography variant="subtitle1" sx={{ minWidth: 140, color: 'text.secondary' }}>
+                    {t('profile.email')}:
+                  </Typography>
+                  <Typography variant="body1">{user?.email || '-'}</Typography>
+                </Stack>
 
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Stack spacing={1}>
-                <Typography variant="caption" color="secondary">
-                  {t('profile.email')}
-                </Typography>
-                <Typography variant="body1">{user?.email || '-'}</Typography>
-              </Stack>
-            </Grid>
+                {/* Role */}
+                <Stack direction="row" spacing={2}>
+                  <Typography variant="subtitle1" sx={{ minWidth: 140, color: 'text.secondary' }}>
+                    {t('profile.role')}:
+                  </Typography>
+                  <Typography variant="body1">
+                    {user?.role && t(`roles.${user.role.replace('_', '')}`)}
+                  </Typography>
+                </Stack>
 
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Stack spacing={1}>
-                <Typography variant="caption" color="secondary">
-                  {t('profile.role')}
-                </Typography>
-                <Typography variant="body1">
-                  {user?.role && t(`roles.${user.role.replace('_', '')}`)}
-                </Typography>
-              </Stack>
-            </Grid>
-
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Stack spacing={1}>
-                <Typography variant="caption" color="secondary">
-                  {t('profile.status')}
-                </Typography>
-                <Box>
-                  <Chip 
-                    label={user?.isActive ? t('status.active') : t('status.inactive')} 
-                    color={user?.isActive ? 'success' : 'error'} 
-                    size="small" 
-                  />
-                </Box>
-              </Stack>
-            </Grid>
-
-            <Grid size={12}>
-              <Divider />
-            </Grid>
-
-            {/* Permissions */}
-            <Grid size={12}>
-              <Stack spacing={1}>
-                <Typography variant="caption" color="secondary">
-                  {t('profile.permissions')}
-                </Typography>
-                <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
-                  {user?.permissions && user.permissions.length > 0 ? (
-                    user.permissions.slice(0, 5).map((permission, index) => (
-                      <Chip 
-                        key={index} 
-                        label={permission} 
-                        variant="outlined" 
-                        size="small" 
-                      />
-                    ))
-                  ) : (
-                    <Typography variant="body2" color="textSecondary">
-                      {t('profile.noPermissions')}
-                    </Typography>
-                  )}
-                  {user?.permissions && user.permissions.length > 5 && (
-                    <Chip 
-                      label={`+${user.permissions.length - 5} ${t('common.more')}`} 
-                      variant="outlined" 
-                      size="small" 
-                      color="primary"
-                    />
-                  )}
+                {/* Permissions */}
+                <Stack direction="row" spacing={2}>
+                  <Typography variant="subtitle1" sx={{ minWidth: 140, color: 'text.secondary' }}>
+                    {t('profile.permissions')}:
+                  </Typography>
+                  <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                    {user?.permissions && user.permissions.length > 0 ? (
+                      <>
+                        {user.permissions.slice(0, 5).map((permission, index) => (
+                          <Chip key={index} label={permission} variant="outlined" size="small" />
+                        ))}
+                        {user.permissions.length > 5 && (
+                          <Chip
+                            label={`+${user.permissions.length - 5} ${t('common.more')}`}
+                            variant="outlined"
+                            size="small"
+                            color="primary"
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <Typography variant="body1" color="textSecondary">
+                        {t('profile.noPermissions')}
+                      </Typography>
+                    )}
+                  </Stack>
                 </Stack>
               </Stack>
             </Grid>

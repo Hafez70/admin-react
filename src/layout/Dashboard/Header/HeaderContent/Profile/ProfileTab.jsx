@@ -8,16 +8,18 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
+// project imports
+import useAuth from 'hooks/useAuth';
+import { showSuccess } from 'utils/toast';
+
 // assets
 import EditOutlined from '@ant-design/icons/EditOutlined';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
-import useAuth from 'hooks/useAuth';
-import { showSuccess } from 'utils/toast';
 
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
-export default function ProfileTab() {
+export default function ProfileTab({ handleLogout }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { logout } = useAuth();
@@ -30,12 +32,16 @@ export default function ProfileTab() {
     navigate('/profile/view');
   };
 
-   const handleLogout = async () => {
-    await logout();
-    showSuccess(t('toast.logoutSuccess'));
-    setTimeout(() => {
-      navigate('/login', { replace: true });
-    }, 300);
+  const onLogout = async () => {
+    if (handleLogout) {
+      handleLogout();
+    } else {
+      await logout();
+      showSuccess(t('toast.logoutSuccess'));
+      setTimeout(() => {
+        navigate('/login', { replace: true });
+      }, 300);
+    }
   };
 
   return (
@@ -52,7 +58,7 @@ export default function ProfileTab() {
         </ListItemIcon>
         <ListItemText primary={t('profile.editProfile')} />
       </ListItemButton>
-      <ListItemButton onClick={handleLogout}>
+      <ListItemButton onClick={onLogout}>
         <ListItemIcon>
           <LogoutOutlined />
         </ListItemIcon>
