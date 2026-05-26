@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
 import useAuth from 'hooks/useAuth';
+import { showSuccess, showError } from 'utils/toast';
 
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
@@ -79,18 +80,19 @@ export default function AuthRegister() {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await register(
-              values.email,
-              values.password,
-              `${values.firstname} ${values.lastname}`
-            );
+            await register(values.email, values.password, `${values.firstname} ${values.lastname}`);
             setStatus({ success: true });
+            showSuccess(t('toast.registerSuccess'));
             setSubmitting(false);
-            navigate('/dashboard/default');
+            // Small delay to show toast before navigation
+            setTimeout(() => {
+              navigate('/dashboard/default');
+            }, 300);
           } catch (err) {
             console.error('Register error:', err);
             setStatus({ success: false });
             setErrors({ submit: err.message || t('auth.registerFailed') });
+            showError(t('toast.registerError'));
             setSubmitting(false);
           }
         }}

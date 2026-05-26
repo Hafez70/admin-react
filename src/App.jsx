@@ -7,6 +7,7 @@ import router from 'routes';
 import ThemeCustomization from 'themes';
 
 import ScrollTop from 'components/ScrollTop';
+import Toaster from 'components/Toaster';
 
 // ==============================|| APP - THEME, ROUTER, LOCAL ||============================== //
 
@@ -22,6 +23,7 @@ export default function App() {
   return (
     <ThemeCustomization>
       <ScrollTop>
+        <Toaster />
         <RouterProvider router={router} />
       </ScrollTop>
     </ThemeCustomization>

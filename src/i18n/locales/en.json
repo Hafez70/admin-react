@@ -36,6 +36,27 @@
     "forbiddenMessage": "You don't have permission to access this page. Please contact your administrator if you believe this is an error.",
     "backToHome": "Back to Home"
   },
+  "toast": {
+    "loginSuccess": "Welcome back!",
+    "loginError": "Login failed. Please check your credentials",
+    "logoutSuccess": "Logged out successfully",
+    "registerSuccess": "Account created successfully!",
+    "registerError": "Registration failed. Please try again",
+    "updateSuccess": "Updated successfully",
+    "updateError": "Update failed. Please try again",
+    "deleteSuccess": "Deleted successfully",
+    "deleteError": "Delete failed. Please try again",
+    "createSuccess": "Created successfully",
+    "createError": "Create failed. Please try again",
+    "saveSuccess": "Saved successfully",
+    "saveError": "Save failed. Please try again",
+    "loadError": "Failed to load data",
+    "networkError": "Network error. Please check your connection",
+    "permissionDenied": "You don't have permission to perform this action",
+    "validationError": "Please check your input and try again",
+    "copySuccess": "Copied to clipboard",
+    "copyError": "Failed to copy to clipboard"
+  },
   "auth": {
     "email": "Email",
     "password": "Password",

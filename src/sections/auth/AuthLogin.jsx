@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
 import useAuth from 'hooks/useAuth';
+import { showSuccess, showError } from 'utils/toast';
 
 // assets
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
@@ -65,12 +66,17 @@ export default function AuthLogin({ isDemo = false }) {
           try {
             await login(values.email, values.password);
             setStatus({ success: true });
+            showSuccess(t('toast.loginSuccess'));
             setSubmitting(false);
-            navigate('/dashboard/default');
+            // Small delay to show toast before navigation
+            setTimeout(() => {
+              navigate('/dashboard/default');
+            }, 300);
           } catch (err) {
             console.error('Login error:', err);
             setStatus({ success: false });
             setErrors({ submit: err.message || t('auth.loginFailed') });
+            showError(t('toast.loginError'));
             setSubmitting(false);
           }
         }}

@@ -28,6 +28,7 @@ import Avatar from 'components/@extended/Avatar';
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 import IconButton from 'components/@extended/IconButton';
+import { showSuccess } from 'utils/toast';
 
 // assets
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
@@ -74,7 +75,10 @@ export default function Profile() {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login', { replace: true });
+    showSuccess(t('toast.logoutSuccess'));
+    setTimeout(() => {
+      navigate('/login', { replace: true });
+    }, 300);
   };
 
   const [value, setValue] = useState(0);
