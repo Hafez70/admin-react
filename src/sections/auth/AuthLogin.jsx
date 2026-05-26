@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 // material-ui
 import Button from '@mui/material/Button';
@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 // project imports
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
+import useAuth from 'hooks/useAuth';
 
 // assets
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
@@ -32,9 +33,12 @@ import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
 
 export default function AuthLogin({ isDemo = false }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  
   const [checked, setChecked] = React.useState(false);
-
   const [showPassword, setShowPassword] = React.useState(false);
+  
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -47,8 +51,8 @@ export default function AuthLogin({ isDemo = false }) {
     <>
       <Formik
         initialValues={{
-          email: 'hafez.gh.mohammadi@gmail.com',
-          password: '',
+          email: 'admin@taski.com',
+          password: 'admin123',
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -56,11 +60,23 @@ export default function AuthLogin({ isDemo = false }) {
           password: Yup.string()
             .required(t('auth.passwordRequired'))
             .test('no-leading-trailing-whitespace', t('auth.passwordNoSpaces'), (value) => value === value.trim())
-            .max(10, t('auth.passwordMaxLength'))
         })}
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          try {
+            await login(values.email, values.password);
+            setStatus({ success: true });
+            setSubmitting(false);
+            navigate('/dashboard/default');
+          } catch (err) {
+            console.error('Login error:', err);
+            setStatus({ success: false });
+            setErrors({ submit: err.message || t('auth.loginFailed') });
+            setSubmitting(false);
+          }
+        }}
       >
-        {({ errors, handleBlur, handleChange, touched, values }) => (
-          <form noValidate>
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+          <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid size={12}>
                 <Stack sx={{ gap: 1 }}>
@@ -136,10 +152,23 @@ export default function AuthLogin({ isDemo = false }) {
                   </Link>
                 </Stack>
               </Grid>
+              {errors.submit && (
+                <Grid size={12}>
+                  <FormHelperText error>{errors.submit}</FormHelperText>
+                </Grid>
+              )}
               <Grid size={12}>
                 <AnimateButton>
-                  <Button fullWidth size="large" variant="contained" color="primary">
-                    {t('common.login')}
+                  <Button 
+                    disableElevation 
+                    disabled={isSubmitting} 
+                    fullWidth 
+                    size="large" 
+                    type="submit" 
+                    variant="contained" 
+                    color="primary"
+                  >
+                    {isSubmitting ? t('common.loading') : t('common.login')}
                   </Button>
                 </AnimateButton>
               </Grid>

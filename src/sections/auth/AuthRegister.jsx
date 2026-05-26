@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 // material-ui
 import Button from '@mui/material/Button';
@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next';
 // project imports
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
+import useAuth from 'hooks/useAuth';
 
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
@@ -33,8 +34,12 @@ import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
 
 export default function AuthRegister() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { register } = useAuth();
+  
   const [level, setLevel] = useState();
   const [showPassword, setShowPassword] = useState(false);
+  
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -69,12 +74,29 @@ export default function AuthRegister() {
           email: Yup.string().email(t('auth.mustBeValidEmail')).max(255).required(t('auth.emailRequired')),
           password: Yup.string()
             .required(t('auth.passwordRequired'))
+            .min(6, t('auth.passwordMinLength'))
             .test('no-leading-trailing-whitespace', t('auth.passwordNoSpaces'), (value) => value === value.trim())
-            .max(10, t('auth.passwordMaxLength'))
         })}
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          try {
+            await register(
+              values.email,
+              values.password,
+              `${values.firstname} ${values.lastname}`
+            );
+            setStatus({ success: true });
+            setSubmitting(false);
+            navigate('/dashboard/default');
+          } catch (err) {
+            console.error('Register error:', err);
+            setStatus({ success: false });
+            setErrors({ submit: err.message || t('auth.registerFailed') });
+            setSubmitting(false);
+          }
+        }}
       >
-        {({ errors, handleBlur, handleChange, touched, values }) => (
-          <form noValidate>
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+          <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <Stack sx={{ gap: 1 }}>
@@ -228,8 +250,16 @@ export default function AuthRegister() {
               )}
               <Grid size={12}>
                 <AnimateButton>
-                  <Button fullWidth size="large" variant="contained" color="primary">
-                    {t('auth.createAccount')}
+                  <Button 
+                    disableElevation 
+                    disabled={isSubmitting} 
+                    fullWidth 
+                    size="large" 
+                    type="submit" 
+                    variant="contained" 
+                    color="primary"
+                  >
+                    {isSubmitting ? t('common.loading') : t('auth.createAccount')}
                   </Button>
                 </AnimateButton>
               </Grid>
