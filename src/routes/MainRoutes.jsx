@@ -16,6 +16,9 @@ const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
 
+// render - error pages
+const Error403 = Loadable(lazy(() => import('pages/error/403')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -54,6 +57,10 @@ const MainRoutes = {
     {
       path: 'sample-page',
       element: <SamplePage />
+    },
+    {
+      path: '403',
+      element: <Error403 />
     }
   ]
 };

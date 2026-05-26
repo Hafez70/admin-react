@@ -23,12 +23,40 @@ const mockUsers = [
   },
   {
     id: 2,
+    email: 'editor@taski.com',
+    password: 'editor123',
+    name: 'Editor User',
+    role: 'editor',
+    isActive: true,
+    permissions: [
+      'dashboard.view',
+      'users.view',
+      'products.view',
+      'products.create',
+      'products.edit',
+      'categories.view',
+      'categories.create',
+      'categories.edit',
+      'settings.view'
+    ]
+  },
+  {
+    id: 3,
+    email: 'viewer@taski.com',
+    password: 'viewer123',
+    name: 'Viewer User',
+    role: 'viewer',
+    isActive: true,
+    permissions: ['dashboard.view', 'users.view', 'products.view', 'categories.view']
+  },
+  {
+    id: 4,
     email: 'user@taski.com',
     password: 'user123',
     name: 'Regular User',
     role: 'user',
     isActive: true,
-    permissions: ['read']
+    permissions: ['dashboard.view']
   }
 ];
 

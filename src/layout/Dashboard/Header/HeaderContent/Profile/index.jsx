@@ -134,6 +134,9 @@ export default function Profile() {
                             <Typography variant="body2" color="text.secondary">
                               {user?.email || ''}
                             </Typography>
+                            <Typography variant="caption" color="primary.main">
+                              {user?.role && t(`roles.${user.role.replace('_', '')}`)}
+                            </Typography>
                           </Stack>
                         </Stack>
                       </Grid>

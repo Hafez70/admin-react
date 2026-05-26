@@ -5,11 +5,18 @@ import Box from '@mui/material/Box';
 // project import
 import NavGroup from './NavGroup';
 import menuItem from 'menu-items';
+import useAuth from 'hooks/useAuth';
+import { filterMenuByPermissions } from 'utils/menu';
 
 // ==============================|| DRAWER CONTENT - NAVIGATION ||============================== //
 
 export default function Navigation() {
-  const navGroups = menuItem.items.map((item) => {
+  const { user } = useAuth();
+
+  // Filter menu items based on user permissions
+  const filteredItems = filterMenuByPermissions(menuItem.items, user);
+
+  const navGroups = filteredItems.map((item) => {
     switch (item.type) {
       case 'group':
         return <NavGroup key={item.id} item={item} />;

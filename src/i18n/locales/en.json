@@ -23,6 +23,19 @@
     "submit": "Submit",
     "back": "Back"
   },
+  "roles": {
+    "superAdmin": "Super Admin",
+    "admin": "Admin",
+    "editor": "Editor",
+    "viewer": "Viewer",
+    "user": "User",
+    "unknown": "Unknown Role"
+  },
+  "errors": {
+    "forbidden": "Access Forbidden",
+    "forbiddenMessage": "You don't have permission to access this page. Please contact your administrator if you believe this is an error.",
+    "backToHome": "Back to Home"
+  },
   "auth": {
     "email": "Email",
     "password": "Password",

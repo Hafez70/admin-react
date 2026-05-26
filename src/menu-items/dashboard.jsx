@@ -1,5 +1,6 @@
 // assets
 import { DashboardOutlined } from '@ant-design/icons';
+import { PERMISSIONS } from 'constants/permissions';
 
 // icons
 const icons = {
@@ -19,7 +20,8 @@ const dashboard = {
       type: 'item',
       url: '/dashboard/default',
       icon: icons.DashboardOutlined,
-      breadcrumbs: false
+      breadcrumbs: false,
+      permission: PERMISSIONS.DASHBOARD_VIEW
     }
   ]
 };
