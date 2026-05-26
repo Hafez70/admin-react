@@ -108,3 +108,6 @@ dist
 
 # wincompare file
 .bak
+
+# Documentation files (keep locally but not in git)
+*.md
