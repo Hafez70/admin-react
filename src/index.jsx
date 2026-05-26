@@ -26,6 +26,7 @@ import 'vazir-font/dist/font-face.css';
 // project imports
 import App from './App';
 import { ConfigProvider } from 'contexts/ConfigContext';
+import { AuthProvider } from 'contexts/AuthContext';
 import reportWebVitals from './reportWebVitals';
 
 // Import i18n
@@ -38,7 +39,9 @@ const root = createRoot(container);
 
 root.render(
   <ConfigProvider>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </ConfigProvider>
 );
 
