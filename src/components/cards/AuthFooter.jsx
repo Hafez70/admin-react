@@ -1,3 +1,6 @@
+// third-party
+import { useTranslation } from 'react-i18next';
+
 // material-ui
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
@@ -9,6 +12,9 @@ import ContainerWrapper from 'components/ContainerWrapper';
 // ==============================|| FOOTER - AUTHENTICATION ||============================== //
 
 export default function AuthFooter() {
+  const { t } = useTranslation();
+  const currentYear = new Date().getFullYear();
+
   return (
     <ContainerWrapper>
       <Stack
@@ -16,7 +22,7 @@ export default function AuthFooter() {
         sx={{ gap: 2, justifyContent: { xs: 'center', sm: 'space-between' }, textAlign: { xs: 'center', sm: 'inherit' }, py: 2 }}
       >
         <Typography variant="subtitle2" color="secondary">
-          © {new Date().getFullYear()} Taski Admin. Made by{' '}
+          {t('footer.copyright', { year: currentYear })} {t('footer.madeBy')}{' '}
           <Link href="https://github.com/Hafez70" target="_blank" underline="hover">
             Hafez70
           </Link>
@@ -31,7 +37,7 @@ export default function AuthFooter() {
             target="_blank"
             underline="hover"
           >
-            GitHub
+            {t('footer.github')}
           </Typography>
           <Typography
             variant="subtitle2"
@@ -40,7 +46,7 @@ export default function AuthFooter() {
             href="mailto:hafez.gh.mohammadi@gmail.com"
             underline="hover"
           >
-            Contact
+            {t('footer.contact')}
           </Typography>
         </Stack>
       </Stack>

@@ -1,4 +1,8 @@
 import PropTypes from 'prop-types';
+
+// third-party
+import { useTranslation } from 'react-i18next';
+
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
@@ -39,11 +43,12 @@ function CustomShadowBox({ shadow, label, color, bgcolor }) {
 
 export default function ComponentShadow() {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Grid container spacing={3}>
       <Grid size={12}>
-        <MainCard title="Basic Shadow">
+        <MainCard title={t('shadow.basicShadow')}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 6, sm: 4, md: 3, lg: 2 }}>
               <ShadowBox shadow="0" />
@@ -124,7 +129,7 @@ export default function ComponentShadow() {
         </MainCard>
       </Grid>
       <Grid size={12}>
-        <MainCard title="Custom Shadow">
+        <MainCard title={t('shadow.customShadow')}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 6, sm: 4, md: 3, lg: 2 }}>
               <CustomShadowBox shadow={theme.vars.customShadows.z1} label="z1" color="inherit" />
@@ -133,7 +138,7 @@ export default function ComponentShadow() {
         </MainCard>
       </Grid>
       <Grid size={12}>
-        <MainCard title="Color Shadow">
+        <MainCard title={t('shadow.colorShadow')}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 6, sm: 4, md: 3, lg: 2 }}>
               <CustomShadowBox

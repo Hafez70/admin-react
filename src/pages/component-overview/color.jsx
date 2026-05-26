@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 
+// third-party
+import { useTranslation } from 'react-i18next';
+
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -51,12 +54,13 @@ function ColorBox({ bgcolor, title, data, dark, main }) {
 
 export default function ComponentColor() {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const currentPalette = theme.palette;
   return (
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-        <MainCard title="Primary Color">
+        <MainCard title={t('color.primaryColor')}>
           <Stack>
             <ColorBox
               bgcolor="primary.lighter"
@@ -91,7 +95,7 @@ export default function ComponentColor() {
         </MainCard>
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-        <MainCard title="Secondary Color">
+        <MainCard title={t('color.secondaryColor')}>
           <Stack>
             <ColorBox
               bgcolor="secondary.lighter"
@@ -149,7 +153,7 @@ export default function ComponentColor() {
         </MainCard>
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-        <MainCard title="Other Color">
+        <MainCard title={t('color.otherColor')}>
           <Stack>
             <ColorBox
               bgcolor="secondary.A100"
@@ -171,7 +175,7 @@ export default function ComponentColor() {
         </MainCard>
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-        <MainCard title="Success Color">
+        <MainCard title={t('color.successColor')}>
           <Stack>
             <ColorBox
               bgcolor="success.lighter"
@@ -201,7 +205,7 @@ export default function ComponentColor() {
         </MainCard>
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-        <MainCard title="Error Color">
+        <MainCard title={t('color.errorColor')}>
           <Stack>
             <ColorBox
               bgcolor="error.lighter"
@@ -217,7 +221,7 @@ export default function ComponentColor() {
         </MainCard>
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-        <MainCard title="Warning Color">
+        <MainCard title={t('color.warningColor')}>
           <Stack>
             <ColorBox
               bgcolor="warning.lighter"

@@ -1,5 +1,8 @@
 import { useState } from 'react';
 
+// third-party
+import { useTranslation } from 'react-i18next';
+
 // material-ui
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
@@ -57,6 +60,7 @@ const actionSX = {
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 export default function DashboardDefault() {
+  const { t } = useTranslation();
   const [orderMenuAnchor, setOrderMenuAnchor] = useState(null);
   const [analyticsMenuAnchor, setAnalyticsMenuAnchor] = useState(null);
 
@@ -78,19 +82,19 @@ export default function DashboardDefault() {
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       {/* row 1 */}
       <Grid sx={{ mb: -2.25 }} size={12}>
-        <Typography variant="h5">Dashboard</Typography>
+        <Typography variant="h5">{t('dashboard.title')}</Typography>
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <AnalyticEcommerce title="Total Page Views" count="4,42,236" percentage={59.3} extra="35,000" />
+        <AnalyticEcommerce title={t('dashboard.totalPageViews')} count="4,42,236" percentage={59.3} extra="35,000" />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <AnalyticEcommerce title="Total Users" count="78,250" percentage={70.5} extra="8,900" />
+        <AnalyticEcommerce title={t('dashboard.totalUsers')} count="78,250" percentage={70.5} extra="8,900" />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <AnalyticEcommerce title="Total Order" count="18,800" percentage={27.4} isLoss color="warning" extra="1,943" />
+        <AnalyticEcommerce title={t('dashboard.totalOrder')} count="18,800" percentage={27.4} isLoss color="warning" extra="1,943" />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <AnalyticEcommerce title="Total Sales" count="35,078" percentage={27.4} isLoss color="warning" extra="20,395" />
+        <AnalyticEcommerce title={t('dashboard.totalSales')} count="35,078" percentage={27.4} isLoss color="warning" extra="20,395" />
       </Grid>
       <Grid sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} size={{ md: 8 }} />
       {/* row 2 */}
@@ -100,7 +104,7 @@ export default function DashboardDefault() {
       <Grid size={{ xs: 12, md: 5, lg: 4 }}>
         <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Grid>
-            <Typography variant="h5">Income Overview</Typography>
+            <Typography variant="h5">{t('dashboard.incomeOverview')}</Typography>
           </Grid>
           <Grid />
         </Grid>
@@ -108,7 +112,7 @@ export default function DashboardDefault() {
           <Box sx={{ p: 3, pb: 0 }}>
             <Stack sx={{ gap: 2 }}>
               <Typography variant="h6" color="text.secondary">
-                This Week Statistics
+                {t('dashboard.thisWeekStats')}
               </Typography>
               <Typography variant="h3">$7,650</Typography>
             </Stack>
@@ -120,7 +124,7 @@ export default function DashboardDefault() {
       <Grid size={{ xs: 12, md: 7, lg: 8 }}>
         <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Grid>
-            <Typography variant="h5">Recent Orders</Typography>
+            <Typography variant="h5">{t('dashboard.recentOrders')}</Typography>
           </Grid>
           <Grid>
             <IconButton onClick={handleOrderMenuClick}>
@@ -135,9 +139,9 @@ export default function DashboardDefault() {
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-              <MenuItem onClick={handleOrderMenuClose}>Export as CSV</MenuItem>
-              <MenuItem onClick={handleOrderMenuClose}>Export as Excel</MenuItem>
-              <MenuItem onClick={handleOrderMenuClose}>Print Table</MenuItem>
+              <MenuItem onClick={handleOrderMenuClose}>{t('dashboard.exportCsv')}</MenuItem>
+              <MenuItem onClick={handleOrderMenuClose}>{t('dashboard.exportExcel')}</MenuItem>
+              <MenuItem onClick={handleOrderMenuClose}>{t('dashboard.printTable')}</MenuItem>
             </Menu>
           </Grid>
         </Grid>
@@ -148,7 +152,7 @@ export default function DashboardDefault() {
       <Grid size={{ xs: 12, md: 5, lg: 4 }}>
         <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Grid>
-            <Typography variant="h5">Analytics Report</Typography>
+            <Typography variant="h5">{t('dashboard.analyticsReport')}</Typography>
           </Grid>
           <Grid>
             <IconButton onClick={handleAnalyticsMenuClick}>
@@ -163,25 +167,25 @@ export default function DashboardDefault() {
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-              <MenuItem onClick={handleAnalyticsMenuClose}>Weekly</MenuItem>
-              <MenuItem onClick={handleAnalyticsMenuClose}>Monthly</MenuItem>
-              <MenuItem onClick={handleAnalyticsMenuClose}>Yearly</MenuItem>
+              <MenuItem onClick={handleAnalyticsMenuClose}>{t('dashboard.weekly')}</MenuItem>
+              <MenuItem onClick={handleAnalyticsMenuClose}>{t('dashboard.monthly')}</MenuItem>
+              <MenuItem onClick={handleAnalyticsMenuClose}>{t('dashboard.yearly')}</MenuItem>
             </Menu>
           </Grid>
         </Grid>
         <MainCard sx={{ mt: 2 }} content={false}>
           <List sx={{ p: 0, '& .MuiListItemButton-root': { py: 2 } }}>
             <ListItemButton divider>
-              <ListItemText primary="Company Finance Growth" />
+              <ListItemText primary={t('dashboard.companyFinanceGrowth')} />
               <Typography variant="h5">+45.14%</Typography>
             </ListItemButton>
             <ListItemButton divider>
-              <ListItemText primary="Company Expenses Ratio" />
+              <ListItemText primary={t('dashboard.companyExpensesRatio')} />
               <Typography variant="h5">0.58%</Typography>
             </ListItemButton>
             <ListItemButton>
-              <ListItemText primary="Business Risk Cases" />
-              <Typography variant="h5">Low</Typography>
+              <ListItemText primary={t('dashboard.businessRiskCases')} />
+              <Typography variant="h5">{t('dashboard.low')}</Typography>
             </ListItemButton>
           </List>
           <ReportAreaChart />
@@ -194,7 +198,7 @@ export default function DashboardDefault() {
       <Grid size={{ xs: 12, md: 5, lg: 4 }}>
         <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Grid>
-            <Typography variant="h5">Transaction History</Typography>
+            <Typography variant="h5">{t('dashboard.transactionHistory')}</Typography>
           </Grid>
           <Grid />
         </Grid>
@@ -231,7 +235,10 @@ export default function DashboardDefault() {
                   <GiftOutlined />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={<Typography variant="subtitle1">Order #002434</Typography>} secondary="Today, 2:00 AM" />
+              <ListItemText 
+                primary={<Typography variant="subtitle1">{t('dashboard.order')} #002434</Typography>} 
+                secondary={`${t('dashboard.today')}, 2:00 AM`} 
+              />
             </ListItem>
             <ListItem
               component={ListItemButton}
@@ -252,7 +259,10 @@ export default function DashboardDefault() {
                   <MessageOutlined />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={<Typography variant="subtitle1">Order #984947</Typography>} secondary="5 August, 1:45 PM" />
+              <ListItemText 
+                primary={<Typography variant="subtitle1">{t('dashboard.order')} #984947</Typography>} 
+                secondary="5 August, 1:45 PM" 
+              />
             </ListItem>
             <ListItem
               component={ListItemButton}
@@ -272,7 +282,10 @@ export default function DashboardDefault() {
                   <SettingOutlined />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={<Typography variant="subtitle1">Order #988784</Typography>} secondary="7 hours ago" />
+              <ListItemText 
+                primary={<Typography variant="subtitle1">{t('dashboard.order')} #988784</Typography>} 
+                secondary={`7 ${t('dashboard.hoursAgo')}`} 
+              />
             </ListItem>
           </List>
         </MainCard>
@@ -282,10 +295,10 @@ export default function DashboardDefault() {
               <Grid>
                 <Stack>
                   <Typography variant="h5" noWrap>
-                    Help & Support Chat
+                    {t('dashboard.helpSupport')}
                   </Typography>
                   <Typography variant="caption" color="secondary" noWrap>
-                    Typical replay within 5 min
+                    {t('dashboard.typicalReply')}
                   </Typography>
                 </Stack>
               </Grid>
@@ -299,7 +312,7 @@ export default function DashboardDefault() {
               </Grid>
             </Grid>
             <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }}>
-              Need Help?
+              {t('dashboard.needHelp')}
             </Button>
           </Stack>
         </MainCard>

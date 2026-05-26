@@ -18,6 +18,7 @@ import Typography from '@mui/material/Typography';
 // third-party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 // project imports
 import IconButton from 'components/@extended/IconButton';
@@ -30,6 +31,7 @@ import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
 // ============================|| JWT - LOGIN ||============================ //
 
 export default function AuthLogin({ isDemo = false }) {
+  const { t } = useTranslation();
   const [checked, setChecked] = React.useState(false);
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -50,11 +52,11 @@ export default function AuthLogin({ isDemo = false }) {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+          email: Yup.string().email(t('auth.mustBeValidEmail')).max(255).required(t('auth.emailRequired')),
           password: Yup.string()
-            .required('Password is required')
-            .test('no-leading-trailing-whitespace', 'Password cannot start or end with spaces', (value) => value === value.trim())
-            .max(10, 'Password must be less than 10 characters')
+            .required(t('auth.passwordRequired'))
+            .test('no-leading-trailing-whitespace', t('auth.passwordNoSpaces'), (value) => value === value.trim())
+            .max(10, t('auth.passwordMaxLength'))
         })}
       >
         {({ errors, handleBlur, handleChange, touched, values }) => (
@@ -62,7 +64,7 @@ export default function AuthLogin({ isDemo = false }) {
             <Grid container spacing={3}>
               <Grid size={12}>
                 <Stack sx={{ gap: 1 }}>
-                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
+                  <InputLabel htmlFor="email-login">{t('auth.emailAddress')}</InputLabel>
                   <OutlinedInput
                     id="email-login"
                     type="email"
@@ -70,7 +72,7 @@ export default function AuthLogin({ isDemo = false }) {
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Enter email address"
+                    placeholder={t('auth.enterEmail')}
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
                   />
@@ -83,7 +85,7 @@ export default function AuthLogin({ isDemo = false }) {
               </Grid>
               <Grid size={12}>
                 <Stack sx={{ gap: 1 }}>
-                  <InputLabel htmlFor="password-login">Password</InputLabel>
+                  <InputLabel htmlFor="password-login">{t('auth.password')}</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.password && errors.password)}
@@ -106,7 +108,7 @@ export default function AuthLogin({ isDemo = false }) {
                         </IconButton>
                       </InputAdornment>
                     }
-                    placeholder="Enter password"
+                    placeholder={t('auth.enterPassword')}
                   />
                 </Stack>
                 {touched.password && errors.password && (
@@ -127,17 +129,17 @@ export default function AuthLogin({ isDemo = false }) {
                         size="small"
                       />
                     }
-                    label={<Typography variant="h6">Keep me sign in</Typography>}
+                    label={<Typography variant="h6">{t('auth.keepMeSignIn')}</Typography>}
                   />
                   <Link variant="h6" component={RouterLink} to="#" color="text.primary">
-                    Forgot Password?
+                    {t('auth.forgotPassword')}
                   </Link>
                 </Stack>
               </Grid>
               <Grid size={12}>
                 <AnimateButton>
                   <Button fullWidth size="large" variant="contained" color="primary">
-                    Login
+                    {t('common.login')}
                   </Button>
                 </AnimateButton>
               </Grid>
