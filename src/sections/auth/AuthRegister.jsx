@@ -202,7 +202,7 @@ export default function AuthRegister() {
                     </Grid>
                     <Grid>
                       <Typography variant="subtitle1" fontSize="0.75rem">
-                        {level?.label}
+                        {level?.labelKey && t(level.labelKey)}
                       </Typography>
                     </Grid>
                   </Grid>

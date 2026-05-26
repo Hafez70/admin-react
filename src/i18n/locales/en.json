@@ -175,5 +175,12 @@
     "basicShadow": "Basic Shadow",
     "customShadow": "Custom Shadow",
     "colorShadow": "Color Shadow"
+  },
+  "passwordStrength": {
+    "poor": "Poor",
+    "weak": "Weak",
+    "normal": "Normal",
+    "good": "Good",
+    "strong": "Strong"
   }
 }

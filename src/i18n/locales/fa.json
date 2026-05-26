@@ -175,5 +175,12 @@
     "basicShadow": "سایه پایه",
     "customShadow": "سایه سفارشی",
     "colorShadow": "سایه رنگی"
+  },
+  "passwordStrength": {
+    "poor": "ضعیف",
+    "weak": "متوسط",
+    "normal": "معمولی",
+    "good": "خوب",
+    "strong": "قوی"
   }
 }
