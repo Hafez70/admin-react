@@ -38,11 +38,21 @@
     "enterName": "نام کامل خود را وارد کنید"
   },
   "validation": {
-    "nameRequired": "نام الزامی است"
+    "nameRequired": "نام الزامی است",
+    "required": "{{field}} الزامی است",
+    "email": "ایمیل نامعتبر است",
+    "minLength": "{{field}} باید حداقل {{min}} کاراکتر باشد",
+    "maxLength": "{{field}} نباید بیشتر از {{max}} کاراکتر باشد",
+    "phoneFormat": "شماره تلفن نامعتبر است",
+    "passwordMatch": "رمز عبور و تکرار آن یکسان نیستند"
   },
   "status": {
     "active": "فعال",
-    "inactive": "غیرفعال"
+    "inactive": "غیرفعال",
+    "pending": "در انتظار",
+    "completed": "تکمیل شده",
+    "processing": "در حال پردازش",
+    "cancelled": "لغو شده"
   },
   "roles": {
     "superAdmin": "مدیر ارشد",
@@ -157,20 +167,6 @@
     "typicalReply": "معمولاً پاسخ ظرف ۵ دقیقه",
     "needHelp": "نیاز به کمک دارید؟"
   },
-  "status": {
-    "pending": "در انتظار",
-    "completed": "تکمیل شده",
-    "processing": "در حال پردازش",
-    "cancelled": "لغو شده"
-  },
-  "validation": {
-    "required": "{{field}} الزامی است",
-    "email": "ایمیل نامعتبر است",
-    "minLength": "{{field}} باید حداقل {{min}} کاراکتر باشد",
-    "maxLength": "{{field}} نباید بیشتر از {{max}} کاراکتر باشد",
-    "phoneFormat": "شماره تلفن نامعتبر است",
-    "passwordMatch": "رمز عبور و تکرار آن یکسان نیستند"
-  },
   "footer": {
     "copyright": "© {{year}} پنل مدیریت تسکی. تمامی حقوق محفوظ است.",
     "madeBy": "ساخته شده توسط",
@@ -240,9 +236,5 @@
     "normal": "معمولی",
     "good": "خوب",
     "strong": "قوی"
-  },
-  "profile": {
-    "profile": "پروفایل",
-    "setting": "تنظیمات"
   }
 }

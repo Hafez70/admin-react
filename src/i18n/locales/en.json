@@ -13,11 +13,21 @@
     "enterName": "Enter your full name"
   },
   "validation": {
-    "nameRequired": "Name is required"
+    "nameRequired": "Name is required",
+    "required": "{{field}} is required",
+    "email": "Invalid email",
+    "minLength": "{{field}} must be at least {{min}} characters",
+    "maxLength": "{{field}} must not exceed {{max}} characters",
+    "phoneFormat": "Invalid phone number",
+    "passwordMatch": "Passwords do not match"
   },
   "status": {
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "completed": "Completed",
+    "processing": "Processing",
+    "cancelled": "Cancelled"
   },
   "common": {
     "dashboard": "Dashboard",
@@ -157,20 +167,6 @@
     "typicalReply": "Typical replay within 5 min",
     "needHelp": "Need Help?"
   },
-  "status": {
-    "pending": "Pending",
-    "completed": "Completed",
-    "processing": "Processing",
-    "cancelled": "Cancelled"
-  },
-  "validation": {
-    "required": "{{field}} is required",
-    "email": "Invalid email",
-    "minLength": "{{field}} must be at least {{min}} characters",
-    "maxLength": "{{field}} must not exceed {{max}} characters",
-    "phoneFormat": "Invalid phone number",
-    "passwordMatch": "Passwords do not match"
-  },
   "footer": {
     "copyright": "© {{year}} Taski Admin. All rights reserved.",
     "madeBy": "Made by",
@@ -240,9 +236,5 @@
     "normal": "Normal",
     "good": "Good",
     "strong": "Strong"
-  },
-  "profile": {
-    "profile": "Profile",
-    "setting": "Setting"
   }
 }
