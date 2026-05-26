@@ -21,7 +21,28 @@
     "info": "اطلاعات",
     "view": "مشاهده",
     "submit": "ارسال",
-    "back": "بازگشت"
+    "back": "بازگشت",
+    "more": "بیشتر"
+  },
+  "profile": {
+    "profile": "پروفایل",
+    "setting": "تنظیمات",
+    "viewProfile": "مشاهده پروفایل",
+    "editProfile": "ویرایش پروفایل",
+    "fullName": "نام کامل",
+    "email": "آدرس ایمیل",
+    "role": "نقش",
+    "status": "وضعیت",
+    "permissions": "مجوزها",
+    "noPermissions": "هیچ مجوزی تعیین نشده است",
+    "enterName": "نام کامل خود را وارد کنید"
+  },
+  "validation": {
+    "nameRequired": "نام الزامی است"
+  },
+  "status": {
+    "active": "فعال",
+    "inactive": "غیرفعال"
   },
   "roles": {
     "superAdmin": "مدیر ارشد",

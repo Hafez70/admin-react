@@ -1,4 +1,24 @@
 {
+  "profile": {
+    "profile": "Profile",
+    "setting": "Setting",
+    "viewProfile": "View Profile",
+    "editProfile": "Edit Profile",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "role": "Role",
+    "status": "Status",
+    "permissions": "Permissions",
+    "noPermissions": "No permissions assigned",
+    "enterName": "Enter your full name"
+  },
+  "validation": {
+    "nameRequired": "Name is required"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
   "common": {
     "dashboard": "Dashboard",
     "login": "Login",
@@ -21,7 +41,8 @@
     "info": "Info",
     "view": "View",
     "submit": "Submit",
-    "back": "Back"
+    "back": "Back",
+    "more": "more"
   },
   "roles": {
     "superAdmin": "Super Admin",

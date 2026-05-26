@@ -16,6 +16,10 @@ const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
 
+// render - profile pages
+const ProfileView = Loadable(lazy(() => import('pages/profile/view')));
+const ProfileEdit = Loadable(lazy(() => import('pages/profile/edit')));
+
 // render - error pages
 const Error403 = Loadable(lazy(() => import('pages/error/403')));
 
@@ -57,6 +61,19 @@ const MainRoutes = {
     {
       path: 'sample-page',
       element: <SamplePage />
+    },
+    {
+      path: 'profile',
+      children: [
+        {
+          path: 'view',
+          element: <ProfileView />
+        },
+        {
+          path: 'edit',
+          element: <ProfileEdit />
+        }
+      ]
     },
     {
       path: '403',
