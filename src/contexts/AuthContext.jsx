@@ -63,12 +63,13 @@ export function AuthProvider({ children }) {
 
   /**
    * Login user
-   * @param {object} credentials - Login credentials
+   * @param {string} email - User email
+   * @param {string} password - User password
    * @returns {Promise}
    */
-  const login = useCallback(async (credentials) => {
+  const login = useCallback(async (email, password) => {
     try {
-      const response = await authService.login(credentials);
+      const response = await authService.login({ email, password });
 
       if (response.success && response.data) {
         const { user: userData, accessToken, refreshToken } = response.data;
@@ -85,21 +86,21 @@ export function AuthProvider({ children }) {
 
       throw new Error('Login failed');
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.message || error.message || 'Login failed'
-      };
+      // Re-throw to let component handle the error
+      throw new Error(error.response?.data?.message || error.message || 'Login failed');
     }
   }, []);
 
   /**
    * Register user
-   * @param {object} userData - Registration data
+   * @param {string} email - User email
+   * @param {string} password - User password
+   * @param {string} name - User name
    * @returns {Promise}
    */
-  const register = useCallback(async (userData) => {
+  const register = useCallback(async (email, password, name) => {
     try {
-      const response = await authService.register(userData);
+      const response = await authService.register({ email, password, name });
 
       if (response.success && response.data) {
         const { user: newUser, accessToken, refreshToken } = response.data;
@@ -116,10 +117,8 @@ export function AuthProvider({ children }) {
 
       throw new Error('Registration failed');
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.message || error.message || 'Registration failed'
-      };
+      // Re-throw to let component handle the error
+      throw new Error(error.response?.data?.message || error.message || 'Registration failed');
     }
   }, []);
 
