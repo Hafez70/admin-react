@@ -125,8 +125,8 @@ export const showPromise = <T,>(
 /**
  * Custom toast with JSX content
  */
-export const showCustom = (content: ReactNode, options: ToastOptions = {}): string => {
-  return toast.custom((t) => <div>{content}</div>, {
+export const showCustom = (content: (t: { id: string }) => ReactNode, options: ToastOptions = {}): string => {
+  return toast.custom(content, {
     ...defaultOptions,
     ...options
   });
