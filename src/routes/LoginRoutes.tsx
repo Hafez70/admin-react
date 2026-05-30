@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import { RouteObject } from 'react-router-dom';
 
 // project imports
 import Loadable from 'components/Loadable';
@@ -10,7 +11,7 @@ const RegisterPage = Loadable(lazy(() => import('pages/auth/Register')));
 
 // ==============================|| AUTH ROUTING ||============================== //
 
-const LoginRoutes = {
+const LoginRoutes: RouteObject = {
   path: '/',
   children: [
     {

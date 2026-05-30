@@ -32,7 +32,7 @@ import reportWebVitals from './reportWebVitals';
 // Import i18n
 import './i18n';
 
-const container = document.getElementById('root');
+const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 
 // ==============================|| MAIN - REACT DOM RENDER ||============================== //

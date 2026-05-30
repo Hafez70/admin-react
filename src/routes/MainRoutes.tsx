@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import { RouteObject } from 'react-router-dom';
 
 // project imports
 import Loadable from 'components/Loadable';
@@ -25,7 +26,7 @@ const Error403 = Loadable(lazy(() => import('pages/error/403')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
-const MainRoutes = {
+const MainRoutes: RouteObject = {
   path: '/',
   element: (
     <ProtectedRoute>
