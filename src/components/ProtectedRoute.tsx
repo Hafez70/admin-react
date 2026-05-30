@@ -4,17 +4,24 @@
  */
 
 import { Navigate, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { ReactNode } from 'react';
 import useAuth from 'hooks/useAuth';
 
 // project imports
 import Loader from 'components/Loader';
 
 /**
+ * Protected Route Props
+ */
+interface ProtectedRouteProps {
+  children: ReactNode;
+}
+
+/**
  * Protected Route Wrapper
  * Redirects to login if user is not authenticated
  */
-export default function ProtectedRoute({ children }) {
+export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
 
@@ -32,7 +39,3 @@ export default function ProtectedRoute({ children }) {
   // User is authenticated, render the protected content
   return children;
 }
-
-ProtectedRoute.propTypes = {
-  children: PropTypes.node.isRequired
-};

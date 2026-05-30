@@ -1,5 +1,26 @@
-import PropTypes from 'prop-types';
+import { ReactNode } from 'react';
 import usePermission from 'hooks/usePermission';
+import { Permission, Role } from 'constants/permissions';
+
+/**
+ * Can Component Props
+ */
+interface CanProps {
+  /** Single permission to check */
+  permission?: Permission;
+  /** Multiple permissions to check */
+  permissions?: Permission[];
+  /** Require all permissions (default: false = any) */
+  requireAll?: boolean;
+  /** Single role to check */
+  role?: Role;
+  /** Multiple roles to check */
+  roles?: Role[];
+  /** Content to render if permission granted */
+  children: ReactNode;
+  /** Content to render if permission denied */
+  fallback?: ReactNode;
+}
 
 /**
  * Can Component
@@ -23,7 +44,15 @@ import usePermission from 'hooks/usePermission';
  *   <AdminSettings />
  * </Can>
  */
-export default function Can({ permission, permissions, requireAll = false, role, roles, children, fallback = null }) {
+export default function Can({
+  permission,
+  permissions,
+  requireAll = false,
+  role,
+  roles,
+  children,
+  fallback = null
+}: CanProps) {
   const { can, canAny, canAll, is, isAny } = usePermission();
 
   // Check single permission
@@ -51,20 +80,3 @@ export default function Can({ permission, permissions, requireAll = false, role,
 
   return children;
 }
-
-Can.propTypes = {
-  /** Single permission to check */
-  permission: PropTypes.string,
-  /** Multiple permissions to check */
-  permissions: PropTypes.arrayOf(PropTypes.string),
-  /** Require all permissions (default: false = any) */
-  requireAll: PropTypes.bool,
-  /** Single role to check */
-  role: PropTypes.string,
-  /** Multiple roles to check */
-  roles: PropTypes.arrayOf(PropTypes.string),
-  /** Content to render if permission granted */
-  children: PropTypes.node.isRequired,
-  /** Content to render if permission denied */
-  fallback: PropTypes.node
-};

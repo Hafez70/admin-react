@@ -1,7 +1,28 @@
-import PropTypes from 'prop-types';
+import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import usePermission from 'hooks/usePermission';
 import Loader from 'components/Loader';
+import { Permission, Role } from 'constants/permissions';
+
+/**
+ * PermissionRoute Component Props
+ */
+interface PermissionRouteProps {
+  /** Single permission to check */
+  permission?: Permission;
+  /** Multiple permissions to check */
+  permissions?: Permission[];
+  /** Require all permissions (default: false = any) */
+  requireAll?: boolean;
+  /** Single role to check */
+  role?: Role;
+  /** Multiple roles to check */
+  roles?: Role[];
+  /** Content to render if permission granted */
+  children: ReactNode;
+  /** Redirect path if permission denied (default: /403) */
+  redirectTo?: string;
+}
 
 /**
  * PermissionRoute Component
@@ -34,7 +55,7 @@ export default function PermissionRoute({
   roles,
   children,
   redirectTo = '/403'
-}) {
+}: PermissionRouteProps) {
   const { can, canAny, canAll, is, isAny, isAuthenticated } = usePermission();
 
   // Still loading auth state
@@ -72,20 +93,3 @@ export default function PermissionRoute({
 
   return children;
 }
-
-PermissionRoute.propTypes = {
-  /** Single permission to check */
-  permission: PropTypes.string,
-  /** Multiple permissions to check */
-  permissions: PropTypes.arrayOf(PropTypes.string),
-  /** Require all permissions (default: false = any) */
-  requireAll: PropTypes.bool,
-  /** Single role to check */
-  role: PropTypes.string,
-  /** Multiple roles to check */
-  roles: PropTypes.arrayOf(PropTypes.string),
-  /** Content to render if permission granted */
-  children: PropTypes.node.isRequired,
-  /** Redirect path if permission denied (default: /403) */
-  redirectTo: PropTypes.string
-};

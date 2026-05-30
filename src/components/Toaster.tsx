@@ -6,12 +6,12 @@ import { useTranslation } from 'react-i18next';
  * Wraps react-hot-toast Toaster with i18n and RTL support
  *
  * @example
- * // Add to your App.jsx or index.jsx
+ * // Add to your App.tsx or index.tsx
  * import Toaster from 'components/Toaster';
  * 
  * <App>
  *   <Toaster />
- *   {/* rest of app }
+ *   {/* rest of app */}
  * </App>
  */
 export default function Toaster() {
