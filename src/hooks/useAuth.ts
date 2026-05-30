@@ -4,14 +4,13 @@
  */
 
 import { useContext } from 'react';
-import AuthContext from 'contexts/AuthContext';
+import AuthContext, { AuthContextValue } from 'contexts/AuthContext';
 
 /**
  * Hook to use authentication context
- * @returns {object} Auth context value
  * @throws {Error} If used outside AuthProvider
  */
-export default function useAuth() {
+export default function useAuth(): AuthContextValue {
   const context = useContext(AuthContext);
 
   if (!context) {
