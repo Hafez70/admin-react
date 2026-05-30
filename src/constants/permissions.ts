@@ -34,7 +34,9 @@ export const PERMISSIONS = {
 
   // All permissions (super admin)
   ALL: 'all'
-};
+} as const;
+
+export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
 
 /**
  * Role Constants
@@ -46,13 +48,15 @@ export const ROLES = {
   EDITOR: 'editor',
   VIEWER: 'viewer',
   USER: 'user'
-};
+} as const;
+
+export type Role = (typeof ROLES)[keyof typeof ROLES];
 
 /**
  * Default permissions by role
  * Used for reference and testing
  */
-export const ROLE_PERMISSIONS = {
+export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
   [ROLES.SUPER_ADMIN]: [PERMISSIONS.ALL],
 
   [ROLES.ADMIN]: [
