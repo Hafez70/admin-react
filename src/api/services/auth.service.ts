@@ -65,8 +65,7 @@ const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
     return mockAuthAPI.login(credentials);
   }
 
-  const response = await apiClient.post<AuthResponse>(API_ENDPOINTS.AUTH.LOGIN, credentials);
-  return response as AuthResponse;
+  return await apiClient.post<AuthResponse>(API_ENDPOINTS.AUTH.LOGIN, credentials);
 };
 
 /**
@@ -77,8 +76,7 @@ const register = async (userData: RegisterData): Promise<AuthResponse> => {
     return mockAuthAPI.register(userData);
   }
 
-  const response = await apiClient.post<AuthResponse>(API_ENDPOINTS.AUTH.REGISTER, userData);
-  return response as AuthResponse;
+  return await apiClient.post<AuthResponse>(API_ENDPOINTS.AUTH.REGISTER, userData);
 };
 
 /**
@@ -89,8 +87,7 @@ const refresh = async (refreshToken: string): Promise<RefreshResponse> => {
     return mockAuthAPI.refresh(refreshToken);
   }
 
-  const response = await apiClient.post<RefreshResponse>(API_ENDPOINTS.AUTH.REFRESH, { refreshToken });
-  return response as RefreshResponse;
+  return await apiClient.post<RefreshResponse>(API_ENDPOINTS.AUTH.REFRESH, { refreshToken });
 };
 
 /**
@@ -101,8 +98,7 @@ const logout = async (userId: number): Promise<LogoutResponse> => {
     return mockAuthAPI.logout();
   }
 
-  const response = await apiClient.post<LogoutResponse>(API_ENDPOINTS.AUTH.LOGOUT(userId));
-  return response as LogoutResponse;
+  return await apiClient.post<LogoutResponse>(API_ENDPOINTS.AUTH.LOGOUT(userId));
 };
 
 const authService = {

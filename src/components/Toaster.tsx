@@ -4,15 +4,6 @@ import { useTranslation } from 'react-i18next';
 /**
  * Toaster Component
  * Wraps react-hot-toast Toaster with i18n and RTL support
- *
- * @example
- * // Add to your App.tsx or index.tsx
- * import Toaster from 'components/Toaster';
- * 
- * <App>
- *   <Toaster />
- *   {/* rest of app */}
- * </App>
  */
 export default function Toaster() {
   const { i18n } = useTranslation();

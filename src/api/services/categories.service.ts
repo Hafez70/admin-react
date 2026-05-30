@@ -24,48 +24,42 @@ const list = async (): Promise<ApiResponse<Category[]>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockCategoriesAPI.list();
   }
-  const response = await apiClient.get<ApiResponse<Category[]>>(API_ENDPOINTS.CATEGORIES.LIST);
-  return response as ApiResponse<Category[]>;
+  return await apiClient.get<ApiResponse<Category[]>>(API_ENDPOINTS.CATEGORIES.LIST);
 };
 
 const tree = async (): Promise<ApiResponse<Category[]>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockCategoriesAPI.tree();
   }
-  const response = await apiClient.get<ApiResponse<Category[]>>(API_ENDPOINTS.CATEGORIES.TREE);
-  return response as ApiResponse<Category[]>;
+  return await apiClient.get<ApiResponse<Category[]>>(API_ENDPOINTS.CATEGORIES.TREE);
 };
 
 const getById = async (id: number | string): Promise<ApiResponse<Category>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockCategoriesAPI.getById(id);
   }
-  const response = await apiClient.get<ApiResponse<Category>>(API_ENDPOINTS.CATEGORIES.DETAIL(Number(id)));
-  return response as ApiResponse<Category>;
+  return await apiClient.get<ApiResponse<Category>>(API_ENDPOINTS.CATEGORIES.DETAIL(Number(id)));
 };
 
 const create = async (categoryData: Partial<Category>): Promise<ApiResponse<Category>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockCategoriesAPI.create(categoryData);
   }
-  const response = await apiClient.post<ApiResponse<Category>>(API_ENDPOINTS.CATEGORIES.CREATE, categoryData);
-  return response as ApiResponse<Category>;
+  return await apiClient.post<ApiResponse<Category>>(API_ENDPOINTS.CATEGORIES.CREATE, categoryData);
 };
 
 const update = async (id: number | string, categoryData: Partial<Category>): Promise<ApiResponse<Category>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockCategoriesAPI.update(id, categoryData);
   }
-  const response = await apiClient.put<ApiResponse<Category>>(API_ENDPOINTS.CATEGORIES.UPDATE(Number(id)), categoryData);
-  return response as ApiResponse<Category>;
+  return await apiClient.put<ApiResponse<Category>>(API_ENDPOINTS.CATEGORIES.UPDATE(Number(id)), categoryData);
 };
 
 const remove = async (id: number | string): Promise<ApiResponse> => {
   if (API_CONFIG.USE_MOCK) {
     return mockCategoriesAPI.delete(id);
   }
-  const response = await apiClient.delete<ApiResponse>(API_ENDPOINTS.CATEGORIES.DELETE(Number(id)));
-  return response as ApiResponse;
+  return await apiClient.delete<ApiResponse>(API_ENDPOINTS.CATEGORIES.DELETE(Number(id)));
 };
 
 const categoriesService = {

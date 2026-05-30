@@ -3,7 +3,7 @@
  * Wrapper around react-hot-toast with i18n support
  */
 
-import toast, { Toast, ToastOptions } from 'react-hot-toast';
+import toast, { ToastOptions } from 'react-hot-toast';
 import { ReactNode } from 'react';
 
 /**
@@ -126,7 +126,7 @@ export const showPromise = <T,>(
  * Custom toast with JSX content
  */
 export const showCustom = (content: ReactNode, options: ToastOptions = {}): string => {
-  return toast.custom(content, {
+  return toast.custom((t) => <div>{content}</div>, {
     ...defaultOptions,
     ...options
   });

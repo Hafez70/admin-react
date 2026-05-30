@@ -25,48 +25,42 @@ const list = async (): Promise<ApiResponse<Product[]>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockProductsAPI.list();
   }
-  const response = await apiClient.get<ApiResponse<Product[]>>(API_ENDPOINTS.PRODUCTS.LIST);
-  return response as ApiResponse<Product[]>;
+  return await apiClient.get<ApiResponse<Product[]>>(API_ENDPOINTS.PRODUCTS.LIST);
 };
 
 const getById = async (id: number | string): Promise<ApiResponse<Product>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockProductsAPI.getById(id);
   }
-  const response = await apiClient.get<ApiResponse<Product>>(API_ENDPOINTS.PRODUCTS.DETAIL(Number(id)));
-  return response as ApiResponse<Product>;
+  return await apiClient.get<ApiResponse<Product>>(API_ENDPOINTS.PRODUCTS.DETAIL(Number(id)));
 };
 
 const getBySlug = async (slug: string): Promise<ApiResponse<Product>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockProductsAPI.getBySlug(slug);
   }
-  const response = await apiClient.get<ApiResponse<Product>>(API_ENDPOINTS.PRODUCTS.BY_SLUG(slug));
-  return response as ApiResponse<Product>;
+  return await apiClient.get<ApiResponse<Product>>(API_ENDPOINTS.PRODUCTS.BY_SLUG(slug));
 };
 
 const create = async (productData: Partial<Product>): Promise<ApiResponse<Product>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockProductsAPI.create(productData);
   }
-  const response = await apiClient.post<ApiResponse<Product>>(API_ENDPOINTS.PRODUCTS.CREATE, productData);
-  return response as ApiResponse<Product>;
+  return await apiClient.post<ApiResponse<Product>>(API_ENDPOINTS.PRODUCTS.CREATE, productData);
 };
 
 const update = async (id: number | string, productData: Partial<Product>): Promise<ApiResponse<Product>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockProductsAPI.update(id, productData);
   }
-  const response = await apiClient.put<ApiResponse<Product>>(API_ENDPOINTS.PRODUCTS.UPDATE(Number(id)), productData);
-  return response as ApiResponse<Product>;
+  return await apiClient.put<ApiResponse<Product>>(API_ENDPOINTS.PRODUCTS.UPDATE(Number(id)), productData);
 };
 
 const remove = async (id: number | string): Promise<ApiResponse> => {
   if (API_CONFIG.USE_MOCK) {
     return mockProductsAPI.delete(id);
   }
-  const response = await apiClient.delete<ApiResponse>(API_ENDPOINTS.PRODUCTS.DELETE(Number(id)));
-  return response as ApiResponse;
+  return await apiClient.delete<ApiResponse>(API_ENDPOINTS.PRODUCTS.DELETE(Number(id)));
 };
 
 const productsService = {

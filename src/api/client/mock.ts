@@ -176,7 +176,7 @@ export const mockAuthAPI = {
     };
   },
 
-  refresh: async (refreshToken: string): Promise<ApiResponse<{ accessToken: string }>> => {
+  refresh: async (_refreshToken: string): Promise<ApiResponse<{ accessToken: string }>> => {
     await delay(500);
 
     return {

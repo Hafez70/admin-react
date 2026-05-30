@@ -18,48 +18,42 @@ const list = async (): Promise<ApiResponse<User[]>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockUsersAPI.list();
   }
-  const response = await apiClient.get<ApiResponse<User[]>>(API_ENDPOINTS.USERS.LIST);
-  return response as ApiResponse<User[]>;
+  return await apiClient.get<ApiResponse<User[]>>(API_ENDPOINTS.USERS.LIST);
 };
 
 const getById = async (id: number | string): Promise<ApiResponse<User>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockUsersAPI.getById(id);
   }
-  const response = await apiClient.get<ApiResponse<User>>(API_ENDPOINTS.USERS.DETAIL(Number(id)));
-  return response as ApiResponse<User>;
+  return await apiClient.get<ApiResponse<User>>(API_ENDPOINTS.USERS.DETAIL(Number(id)));
 };
 
 const create = async (userData: Partial<CreateUserDTO>): Promise<ApiResponse<User>> => {
   if (API_CONFIG.USE_MOCK) {
     return mockUsersAPI.create(userData);
   }
-  const response = await apiClient.post<ApiResponse<User>>(API_ENDPOINTS.USERS.CREATE, userData);
-  return response as ApiResponse<User>;
+  return await apiClient.post<ApiResponse<User>>(API_ENDPOINTS.USERS.CREATE, userData);
 };
 
 const activate = async (id: number | string): Promise<ApiResponse> => {
   if (API_CONFIG.USE_MOCK) {
     return mockUsersAPI.activate(id);
   }
-  const response = await apiClient.post<ApiResponse>(API_ENDPOINTS.USERS.ACTIVATE(Number(id)));
-  return response as ApiResponse;
+  return await apiClient.post<ApiResponse>(API_ENDPOINTS.USERS.ACTIVATE(Number(id)));
 };
 
 const deactivate = async (id: number | string): Promise<ApiResponse> => {
   if (API_CONFIG.USE_MOCK) {
     return mockUsersAPI.deactivate(id);
   }
-  const response = await apiClient.post<ApiResponse>(API_ENDPOINTS.USERS.DEACTIVATE(Number(id)));
-  return response as ApiResponse;
+  return await apiClient.post<ApiResponse>(API_ENDPOINTS.USERS.DEACTIVATE(Number(id)));
 };
 
 const changePassword = async (id: number | string, passwords: { newPassword: string }): Promise<ApiResponse> => {
   if (API_CONFIG.USE_MOCK) {
     return mockUsersAPI.changePassword(id, passwords);
   }
-  const response = await apiClient.post<ApiResponse>(API_ENDPOINTS.USERS.CHANGE_PASSWORD(Number(id)), passwords);
-  return response as ApiResponse;
+  return await apiClient.post<ApiResponse>(API_ENDPOINTS.USERS.CHANGE_PASSWORD(Number(id)), passwords);
 };
 
 const usersService = {
