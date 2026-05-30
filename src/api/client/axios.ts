@@ -3,9 +3,17 @@
  * Configured axios instance with interceptors for authentication
  */
 
-import axios from 'axios';
+import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 import { API_CONFIG } from '../config';
 import { getAccessToken, setAccessToken, getRefreshToken, clearAuth } from 'utils/token';
+
+/**
+ * Failed request queue item interface
+ */
+interface FailedQueueItem {
+  resolve: (token: string | null) => void;
+  reject: (error: AxiosError) => void;
+}
 
 // Create axios instance
 const apiClient = axios.create({
@@ -18,23 +26,23 @@ const apiClient = axios.create({
 
 // Request interceptor - Add auth token to requests
 apiClient.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig) => {
     const token = getAccessToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
+  (error: AxiosError) => {
     return Promise.reject(error);
   }
 );
 
 // Response interceptor - Handle errors and token refresh
 let isRefreshing = false;
-let failedQueue = [];
+let failedQueue: FailedQueueItem[] = [];
 
-const processQueue = (error, token = null) => {
+const processQueue = (error: AxiosError | null, token: string | null = null): void => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);
@@ -47,11 +55,11 @@ const processQueue = (error, token = null) => {
 };
 
 apiClient.interceptors.response.use(
-  (response) => {
+  <T,>(response: AxiosResponse<T>) => {
     return response.data;
   },
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: AxiosError) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
     // If error is not 401 or request has already been retried, reject
     if (error.response?.status !== 401 || originalRequest._retry) {
@@ -85,7 +93,7 @@ apiClient.interceptors.response.use(
 
     try {
       // Attempt to refresh token
-      const response = await axios.post(`${API_CONFIG.BASE_URL}/api/users/refresh`, {
+      const response = await axios.post<{ accessToken: string }>(`${API_CONFIG.BASE_URL}/api/users/refresh`, {
         refreshToken
       });
 
@@ -99,7 +107,7 @@ apiClient.interceptors.response.use(
       processQueue(null, accessToken);
       return apiClient(originalRequest);
     } catch (refreshError) {
-      processQueue(refreshError, null);
+      processQueue(refreshError as AxiosError, null);
       clearAuth();
       window.location.href = '/login';
       return Promise.reject(refreshError);

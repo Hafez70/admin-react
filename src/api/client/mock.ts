@@ -3,15 +3,53 @@
  * Simulated backend responses for development
  */
 
+import { User } from 'models/user.model';
+
+/**
+ * Mock user with password interface
+ */
+interface MockUser extends User {
+  password: string;
+}
+
+/**
+ * Mock product interface
+ */
+interface MockProduct {
+  id: number;
+  name: string;
+  slug: string;
+  price: number;
+  category: number;
+}
+
+/**
+ * Mock category interface
+ */
+interface MockCategory {
+  id: number;
+  name: string;
+  slug: string;
+  parent: number | null;
+}
+
+/**
+ * API response interface
+ */
+interface ApiResponse<T = unknown> {
+  success: boolean;
+  data?: T;
+  message?: string;
+}
+
 /**
  * Simulate API delay
- * @param {number} ms - Delay in milliseconds
- * @returns {Promise}
  */
-const delay = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
+const delay = (ms: number = 1000): Promise<void> => 
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 // Mock users database
-const mockUsers = [
+const mockUsers: MockUser[] = [
   {
     id: 1,
     email: 'admin@taski.com',
@@ -61,14 +99,14 @@ const mockUsers = [
 ];
 
 // Mock products
-const mockProducts = [
+const mockProducts: MockProduct[] = [
   { id: 1, name: 'Product 1', slug: 'product-1', price: 100, category: 1 },
   { id: 2, name: 'Product 2', slug: 'product-2', price: 200, category: 1 },
   { id: 3, name: 'Product 3', slug: 'product-3', price: 300, category: 2 }
 ];
 
 // Mock categories
-const mockCategories = [
+const mockCategories: MockCategory[] = [
   { id: 1, name: 'Category 1', slug: 'category-1', parent: null },
   { id: 2, name: 'Category 2', slug: 'category-2', parent: 1 }
 ];
@@ -77,7 +115,11 @@ const mockCategories = [
  * Mock Auth API
  */
 export const mockAuthAPI = {
-  login: async (credentials) => {
+  login: async (credentials: { email: string; password: string }): Promise<ApiResponse<{
+    user: User;
+    accessToken: string;
+    refreshToken: string;
+  }>> => {
     await delay(800);
 
     const user = mockUsers.find(
@@ -100,7 +142,11 @@ export const mockAuthAPI = {
     };
   },
 
-  register: async (userData) => {
+  register: async (userData: { email: string; password: string; name: string }): Promise<ApiResponse<{
+    user: User;
+    accessToken: string;
+    refreshToken: string;
+  }>> => {
     await delay(800);
 
     const existingUser = mockUsers.find((u) => u.email === userData.email);
@@ -108,7 +154,7 @@ export const mockAuthAPI = {
       throw new Error('Email already exists');
     }
 
-    const newUser = {
+    const newUser: MockUser = {
       id: mockUsers.length + 1,
       ...userData,
       role: 'user',
@@ -130,7 +176,7 @@ export const mockAuthAPI = {
     };
   },
 
-  refresh: async (refreshToken) => {
+  refresh: async (refreshToken: string): Promise<ApiResponse<{ accessToken: string }>> => {
     await delay(500);
 
     return {
@@ -141,7 +187,7 @@ export const mockAuthAPI = {
     };
   },
 
-  logout: async () => {
+  logout: async (): Promise<ApiResponse> => {
     await delay(300);
     return { success: true, message: 'Logged out successfully' };
   }
@@ -151,7 +197,7 @@ export const mockAuthAPI = {
  * Mock Users API
  */
 export const mockUsersAPI = {
-  list: async () => {
+  list: async (): Promise<ApiResponse<User[]>> => {
     await delay(600);
     return {
       success: true,
@@ -159,7 +205,7 @@ export const mockUsersAPI = {
     };
   },
 
-  getById: async (id) => {
+  getById: async (id: number | string): Promise<ApiResponse<User>> => {
     await delay(400);
     const user = mockUsers.find((u) => u.id === Number(id));
     if (!user) throw new Error('User not found');
@@ -168,19 +214,23 @@ export const mockUsersAPI = {
     return { success: true, data: userWithoutPassword };
   },
 
-  create: async (userData) => {
+  create: async (userData: Partial<MockUser>): Promise<ApiResponse<User>> => {
     await delay(600);
-    const newUser = {
+    const newUser: MockUser = {
       id: mockUsers.length + 1,
-      ...userData,
-      isActive: true
+      email: userData.email || '',
+      password: userData.password || '',
+      name: userData.name || '',
+      role: userData.role || 'user',
+      isActive: true,
+      permissions: userData.permissions || []
     };
     mockUsers.push(newUser);
     const { password, ...userWithoutPassword } = newUser;
     return { success: true, data: userWithoutPassword };
   },
 
-  activate: async (id) => {
+  activate: async (id: number | string): Promise<ApiResponse> => {
     await delay(400);
     const user = mockUsers.find((u) => u.id === Number(id));
     if (!user) throw new Error('User not found');
@@ -188,7 +238,7 @@ export const mockUsersAPI = {
     return { success: true, message: 'User activated' };
   },
 
-  deactivate: async (id) => {
+  deactivate: async (id: number | string): Promise<ApiResponse> => {
     await delay(400);
     const user = mockUsers.find((u) => u.id === Number(id));
     if (!user) throw new Error('User not found');
@@ -196,7 +246,7 @@ export const mockUsersAPI = {
     return { success: true, message: 'User deactivated' };
   },
 
-  changePassword: async (id, passwords) => {
+  changePassword: async (id: number | string, passwords: { newPassword: string }): Promise<ApiResponse> => {
     await delay(500);
     const user = mockUsers.find((u) => u.id === Number(id));
     if (!user) throw new Error('User not found');
@@ -209,36 +259,39 @@ export const mockUsersAPI = {
  * Mock Products API
  */
 export const mockProductsAPI = {
-  list: async () => {
+  list: async (): Promise<ApiResponse<MockProduct[]>> => {
     await delay(600);
     return { success: true, data: mockProducts };
   },
 
-  getById: async (id) => {
+  getById: async (id: number | string): Promise<ApiResponse<MockProduct>> => {
     await delay(400);
     const product = mockProducts.find((p) => p.id === Number(id));
     if (!product) throw new Error('Product not found');
     return { success: true, data: product };
   },
 
-  getBySlug: async (slug) => {
+  getBySlug: async (slug: string): Promise<ApiResponse<MockProduct>> => {
     await delay(400);
     const product = mockProducts.find((p) => p.slug === slug);
     if (!product) throw new Error('Product not found');
     return { success: true, data: product };
   },
 
-  create: async (productData) => {
+  create: async (productData: Partial<MockProduct>): Promise<ApiResponse<MockProduct>> => {
     await delay(600);
-    const newProduct = {
+    const newProduct: MockProduct = {
       id: mockProducts.length + 1,
-      ...productData
+      name: productData.name || '',
+      slug: productData.slug || '',
+      price: productData.price || 0,
+      category: productData.category || 1
     };
     mockProducts.push(newProduct);
     return { success: true, data: newProduct };
   },
 
-  update: async (id, productData) => {
+  update: async (id: number | string, productData: Partial<MockProduct>): Promise<ApiResponse<MockProduct>> => {
     await delay(600);
     const index = mockProducts.findIndex((p) => p.id === Number(id));
     if (index === -1) throw new Error('Product not found');
@@ -246,7 +299,7 @@ export const mockProductsAPI = {
     return { success: true, data: mockProducts[index] };
   },
 
-  delete: async (id) => {
+  delete: async (id: number | string): Promise<ApiResponse> => {
     await delay(500);
     const index = mockProducts.findIndex((p) => p.id === Number(id));
     if (index === -1) throw new Error('Product not found');
@@ -259,34 +312,36 @@ export const mockProductsAPI = {
  * Mock Categories API
  */
 export const mockCategoriesAPI = {
-  list: async () => {
+  list: async (): Promise<ApiResponse<MockCategory[]>> => {
     await delay(500);
     return { success: true, data: mockCategories };
   },
 
-  tree: async () => {
+  tree: async (): Promise<ApiResponse<MockCategory[]>> => {
     await delay(500);
     return { success: true, data: mockCategories };
   },
 
-  getById: async (id) => {
+  getById: async (id: number | string): Promise<ApiResponse<MockCategory>> => {
     await delay(400);
     const category = mockCategories.find((c) => c.id === Number(id));
     if (!category) throw new Error('Category not found');
     return { success: true, data: category };
   },
 
-  create: async (categoryData) => {
+  create: async (categoryData: Partial<MockCategory>): Promise<ApiResponse<MockCategory>> => {
     await delay(600);
-    const newCategory = {
+    const newCategory: MockCategory = {
       id: mockCategories.length + 1,
-      ...categoryData
+      name: categoryData.name || '',
+      slug: categoryData.slug || '',
+      parent: categoryData.parent || null
     };
     mockCategories.push(newCategory);
     return { success: true, data: newCategory };
   },
 
-  update: async (id, categoryData) => {
+  update: async (id: number | string, categoryData: Partial<MockCategory>): Promise<ApiResponse<MockCategory>> => {
     await delay(600);
     const index = mockCategories.findIndex((c) => c.id === Number(id));
     if (index === -1) throw new Error('Category not found');
@@ -294,7 +349,7 @@ export const mockCategoriesAPI = {
     return { success: true, data: mockCategories[index] };
   },
 
-  delete: async (id) => {
+  delete: async (id: number | string): Promise<ApiResponse> => {
     await delay(500);
     const index = mockCategories.findIndex((c) => c.id === Number(id));
     if (index === -1) throw new Error('Category not found');

@@ -5,6 +5,7 @@
 
 // Configuration
 export { API_CONFIG, API_ENDPOINTS, QUERY_KEYS } from './config';
+export type { ApiConfig } from './config';
 
 // Services
 export * from './services';
