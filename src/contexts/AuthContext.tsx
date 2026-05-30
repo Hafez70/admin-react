@@ -3,22 +3,43 @@
  * Global authentication state management
  */
 
-import { createContext, useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { authService } from 'api/services';
 import { setAccessToken, setRefreshToken, setUser, getUser, getAccessToken, clearAuth, isTokenExpired } from 'utils/token';
+import { User } from 'models/user.model';
 
-const AuthContext = createContext(null);
+/**
+ * Auth context value interface
+ */
+export interface AuthContextValue {
+  user: User | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  login: (email: string, password: string) => Promise<{ success: boolean; user: User }>;
+  register: (email: string, password: string, name: string) => Promise<{ success: boolean; user: User }>;
+  logout: () => Promise<void>;
+  updateUser: (updates: Partial<User>) => void;
+  checkAuth: () => boolean;
+}
 
-export function AuthProvider({ children }) {
-  const [user, setUserState] = useState(null);
+/**
+ * Auth provider props
+ */
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+const AuthContext = createContext<AuthContextValue | null>(null);
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [user, setUserState] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   /**
    * Check authentication status
    */
-  const checkAuth = useCallback(() => {
+  const checkAuth = useCallback((): boolean => {
     const savedUser = getUser();
     const token = getAccessToken();
 
@@ -38,7 +59,7 @@ export function AuthProvider({ children }) {
 
   // Initialize auth state from localStorage and validate token
   useEffect(() => {
-    const initAuth = () => {
+    const initAuth = (): void => {
       checkAuth();
       setIsLoading(false);
     };
@@ -63,11 +84,8 @@ export function AuthProvider({ children }) {
 
   /**
    * Login user
-   * @param {string} email - User email
-   * @param {string} password - User password
-   * @returns {Promise}
    */
-  const login = useCallback(async (email, password) => {
+  const login = useCallback(async (email: string, password: string): Promise<{ success: boolean; user: User }> => {
     try {
       const response = await authService.login({ email, password });
 
@@ -87,18 +105,17 @@ export function AuthProvider({ children }) {
       throw new Error('Login failed');
     } catch (error) {
       // Re-throw to let component handle the error
-      throw new Error(error.response?.data?.message || error.message || 'Login failed');
+      const errorMessage = (error as { response?: { data?: { message?: string } }; message?: string }).response?.data?.message 
+        || (error as Error).message 
+        || 'Login failed';
+      throw new Error(errorMessage);
     }
   }, []);
 
   /**
    * Register user
-   * @param {string} email - User email
-   * @param {string} password - User password
-   * @param {string} name - User name
-   * @returns {Promise}
    */
-  const register = useCallback(async (email, password, name) => {
+  const register = useCallback(async (email: string, password: string, name: string): Promise<{ success: boolean; user: User }> => {
     try {
       const response = await authService.register({ email, password, name });
 
@@ -118,15 +135,17 @@ export function AuthProvider({ children }) {
       throw new Error('Registration failed');
     } catch (error) {
       // Re-throw to let component handle the error
-      throw new Error(error.response?.data?.message || error.message || 'Registration failed');
+      const errorMessage = (error as { response?: { data?: { message?: string } }; message?: string }).response?.data?.message 
+        || (error as Error).message 
+        || 'Registration failed';
+      throw new Error(errorMessage);
     }
   }, []);
 
   /**
    * Logout user
-   * @returns {Promise}
    */
-  const logout = useCallback(async () => {
+  const logout = useCallback(async (): Promise<void> => {
     try {
       if (user?.id) {
         await authService.logout(user.id);
@@ -142,15 +161,14 @@ export function AuthProvider({ children }) {
 
   /**
    * Update user data
-   * @param {object} updates - User data updates
    */
-  const updateUser = useCallback((updates) => {
-    const updatedUser = { ...user, ...updates };
+  const updateUser = useCallback((updates: Partial<User>): void => {
+    const updatedUser = { ...user, ...updates } as User;
     setUser(updatedUser);
     setUserState(updatedUser);
   }, [user]);
 
-  const value = {
+  const value: AuthContextValue = {
     user,
     isLoading,
     isAuthenticated,
@@ -163,9 +181,5 @@ export function AuthProvider({ children }) {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired
-};
 
 export default AuthContext;
