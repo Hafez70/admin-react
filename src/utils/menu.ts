@@ -4,14 +4,39 @@
  */
 
 import { hasPermission } from './permissions';
+import { User } from 'models/user.model';
+import { Permission } from 'constants/permissions';
+
+/**
+ * Menu item interface
+ */
+export interface MenuItem {
+  id: string;
+  title: string;
+  type: 'group' | 'collapse' | 'item';
+  url?: string;
+  icon?: unknown;
+  breadcrumbs?: boolean;
+  permission?: Permission;
+  role?: string;
+  children?: MenuItem[];
+  parent?: MenuItem | null;
+  disabled?: boolean;
+  external?: boolean;
+  target?: boolean;
+  chip?: {
+    color: string;
+    variant: string;
+    size: string;
+    label: string;
+    avatar?: unknown;
+  };
+}
 
 /**
  * Filter menu items based on user permissions
- * @param {Array} menuItems - Array of menu items
- * @param {object} user - User object with permissions
- * @returns {Array} - Filtered menu items
  */
-export const filterMenuByPermissions = (menuItems, user) => {
+export const filterMenuByPermissions = (menuItems: MenuItem[], user: User | null | undefined): MenuItem[] => {
   if (!menuItems || !Array.isArray(menuItems)) return [];
 
   return menuItems
@@ -43,16 +68,13 @@ export const filterMenuByPermissions = (menuItems, user) => {
 
       return item;
     })
-    .filter(Boolean); // Remove null items
+    .filter((item): item is MenuItem => item !== null); // Type guard to remove null
 };
 
 /**
  * Get active menu item based on current path
- * @param {Array} menuItems - Array of menu items
- * @param {string} pathname - Current pathname
- * @returns {object|null} - Active menu item or null
  */
-export const getActiveMenuItem = (menuItems, pathname) => {
+export const getActiveMenuItem = (menuItems: MenuItem[], pathname: string): MenuItem | null => {
   for (const item of menuItems) {
     if (item.url === pathname) {
       return item;
@@ -69,13 +91,11 @@ export const getActiveMenuItem = (menuItems, pathname) => {
 
 /**
  * Flatten menu items for breadcrumbs
- * @param {Array} menuItems - Array of menu items
- * @returns {Array} - Flattened menu items
  */
-export const flattenMenuItems = (menuItems) => {
-  const flattened = [];
+export const flattenMenuItems = (menuItems: MenuItem[]): MenuItem[] => {
+  const flattened: MenuItem[] = [];
 
-  const flatten = (items, parent = null) => {
+  const flatten = (items: MenuItem[], parent: MenuItem | null = null): void => {
     items.forEach((item) => {
       flattened.push({ ...item, parent });
 

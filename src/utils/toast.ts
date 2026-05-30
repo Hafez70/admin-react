@@ -3,12 +3,22 @@
  * Wrapper around react-hot-toast with i18n support
  */
 
-import toast from 'react-hot-toast';
+import toast, { Toast, ToastOptions } from 'react-hot-toast';
+import { ReactNode } from 'react';
+
+/**
+ * Promise messages interface
+ */
+export interface PromiseMessages {
+  loading?: string;
+  success?: string;
+  error?: string;
+}
 
 /**
  * Default toast options
  */
-const defaultOptions = {
+const defaultOptions: ToastOptions = {
   duration: 4000,
   position: 'top-center',
   style: {
@@ -21,10 +31,8 @@ const defaultOptions = {
 
 /**
  * Success toast
- * @param {string} message - Message to display
- * @param {object} options - Toast options
  */
-export const showSuccess = (message, options = {}) => {
+export const showSuccess = (message: string, options: ToastOptions = {}): string => {
   return toast.success(message, {
     ...defaultOptions,
     style: {
@@ -42,10 +50,8 @@ export const showSuccess = (message, options = {}) => {
 
 /**
  * Error toast
- * @param {string} message - Message to display
- * @param {object} options - Toast options
  */
-export const showError = (message, options = {}) => {
+export const showError = (message: string, options: ToastOptions = {}): string => {
   return toast.error(message, {
     ...defaultOptions,
     duration: 5000, // Errors stay longer
@@ -64,10 +70,8 @@ export const showError = (message, options = {}) => {
 
 /**
  * Warning toast
- * @param {string} message - Message to display
- * @param {object} options - Toast options
  */
-export const showWarning = (message, options = {}) => {
+export const showWarning = (message: string, options: ToastOptions = {}): string => {
   return toast(message, {
     ...defaultOptions,
     icon: '⚠️',
@@ -82,10 +86,8 @@ export const showWarning = (message, options = {}) => {
 
 /**
  * Info toast
- * @param {string} message - Message to display
- * @param {object} options - Toast options
  */
-export const showInfo = (message, options = {}) => {
+export const showInfo = (message: string, options: ToastOptions = {}): string => {
   return toast(message, {
     ...defaultOptions,
     icon: 'ℹ️',
@@ -100,12 +102,12 @@ export const showInfo = (message, options = {}) => {
 
 /**
  * Loading toast (with promise)
- * @param {Promise} promise - Promise to track
- * @param {object} messages - Loading, success, and error messages
- * @param {object} options - Toast options
- * @returns {Promise} Original promise
  */
-export const showPromise = (promise, messages, options = {}) => {
+export const showPromise = <T,>(
+  promise: Promise<T>,
+  messages: PromiseMessages,
+  options: ToastOptions = {}
+): Promise<T> => {
   return toast.promise(
     promise,
     {
@@ -122,10 +124,8 @@ export const showPromise = (promise, messages, options = {}) => {
 
 /**
  * Custom toast with JSX content
- * @param {React.ReactNode} content - JSX content
- * @param {object} options - Toast options
  */
-export const showCustom = (content, options = {}) => {
+export const showCustom = (content: ReactNode, options: ToastOptions = {}): string => {
   return toast.custom(content, {
     ...defaultOptions,
     ...options
@@ -135,22 +135,21 @@ export const showCustom = (content, options = {}) => {
 /**
  * Dismiss all toasts
  */
-export const dismissAll = () => {
+export const dismissAll = (): void => {
   toast.dismiss();
 };
 
 /**
  * Dismiss specific toast
- * @param {string} toastId - Toast ID to dismiss
  */
-export const dismiss = (toastId) => {
+export const dismiss = (toastId?: string): void => {
   toast.dismiss(toastId);
 };
 
 /**
  * Remove all toasts (including animations)
  */
-export const removeAll = () => {
+export const removeAll = (): void => {
   toast.remove();
 };
 

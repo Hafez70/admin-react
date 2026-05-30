@@ -3,15 +3,26 @@
  * Handles storage and retrieval of authentication tokens
  */
 
+import { User } from 'models/user.model';
+
 const TOKEN_KEY = 'taski_access_token';
 const REFRESH_TOKEN_KEY = 'taski_refresh_token';
 const USER_KEY = 'taski_user';
 
 /**
- * Store access token
- * @param {string} token - JWT access token
+ * Decoded JWT token payload interface
  */
-export const setAccessToken = (token) => {
+export interface DecodedToken {
+  exp?: number;
+  iat?: number;
+  sub?: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Store access token
+ */
+export const setAccessToken = (token: string | null): void => {
   if (token) {
     localStorage.setItem(TOKEN_KEY, token);
   } else {
@@ -21,17 +32,15 @@ export const setAccessToken = (token) => {
 
 /**
  * Get access token
- * @returns {string|null} JWT access token
  */
-export const getAccessToken = () => {
+export const getAccessToken = (): string | null => {
   return localStorage.getItem(TOKEN_KEY);
 };
 
 /**
  * Store refresh token
- * @param {string} token - JWT refresh token
  */
-export const setRefreshToken = (token) => {
+export const setRefreshToken = (token: string | null): void => {
   if (token) {
     localStorage.setItem(REFRESH_TOKEN_KEY, token);
   } else {
@@ -41,17 +50,15 @@ export const setRefreshToken = (token) => {
 
 /**
  * Get refresh token
- * @returns {string|null} JWT refresh token
  */
-export const getRefreshToken = () => {
+export const getRefreshToken = (): string | null => {
   return localStorage.getItem(REFRESH_TOKEN_KEY);
 };
 
 /**
  * Store user data
- * @param {object} user - User object
  */
-export const setUser = (user) => {
+export const setUser = (user: User | null): void => {
   if (user) {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   } else {
@@ -61,17 +68,16 @@ export const setUser = (user) => {
 
 /**
  * Get user data
- * @returns {object|null} User object
  */
-export const getUser = () => {
+export const getUser = (): User | null => {
   const user = localStorage.getItem(USER_KEY);
-  return user ? JSON.parse(user) : null;
+  return user ? (JSON.parse(user) as User) : null;
 };
 
 /**
  * Clear all authentication data
  */
-export const clearAuth = () => {
+export const clearAuth = (): void => {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(REFRESH_TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
@@ -79,18 +85,15 @@ export const clearAuth = () => {
 
 /**
  * Check if user is authenticated
- * @returns {boolean}
  */
-export const isAuthenticated = () => {
+export const isAuthenticated = (): boolean => {
   return !!getAccessToken();
 };
 
 /**
  * Decode JWT token (without verification)
- * @param {string} token - JWT token
- * @returns {object|null} Decoded token payload
  */
-export const decodeToken = (token) => {
+export const decodeToken = (token: string): DecodedToken | null => {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -100,7 +103,7 @@ export const decodeToken = (token) => {
         .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
         .join('')
     );
-    return JSON.parse(jsonPayload);
+    return JSON.parse(jsonPayload) as DecodedToken;
   } catch (error) {
     return null;
   }
@@ -108,10 +111,8 @@ export const decodeToken = (token) => {
 
 /**
  * Check if token is expired
- * @param {string} token - JWT token
- * @returns {boolean}
  */
-export const isTokenExpired = (token) => {
+export const isTokenExpired = (token: string | null): boolean => {
   if (!token) return true;
 
   const decoded = decodeToken(token);
